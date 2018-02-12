@@ -74,44 +74,37 @@ namespace CameraApp
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            //Make image available in the gallery
-            /*
             Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
             var contentUri = Android.Net.Uri.FromFile(_file);
             mediaScanIntent.SetData(contentUri);
             SendBroadcast(mediaScanIntent);
-            */
-
-            if ((resultCode == Result.Ok) && (data != null))
-            {
-                //Make image available in the gallery
-                //Test to see if we came from the camera or gallery
-                //If we came from galley no need to make pic available
-                if (requestCode == 0)
-                {
-                    Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-                    var contentUri = Android.Net.Uri.FromFile(_file);
-                    mediaScanIntent.SetData(contentUri);
-                    SendBroadcast(mediaScanIntent);
-                }
-
-                else
-                {
-                    Uri uri = data.Data;
-                    //_file.SetImageURI(uri);
-
-                }
-            }
-
+             
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume too much memory
             // and cause the application to crash.
+
+
             ImageView imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
             int height = Resources.DisplayMetrics.HeightPixels;
             int width = imageView.Height;
-            Android.Graphics.Bitmap bitmap = _file.Path.
-            Android.Graphics.Bitmap copyBitmap = bitmap.Copy(Android.Graphics.Bitmap.Config.Argb8888, true);
-            imageView.SetImageBitmap(copyBitmap);
+            Android.Graphics.Bitmap bitmap = _file.Path.;
+            // Android.Graphics.Bitmap copyBitmap = bitmap.Copy(Android.Graphics.Bitmap.Config.Argb8888, true);
+            //imageView.SetImageBitmap(copyBitmap);
+
+
+            if (bitmap != null)
+            {
+
+
+                Android.Graphics.Bitmap copyBitmap = bitmap.Copy(Android.Graphics.Bitmap.Config.Argb8888, true);
+                imageView.SetImageBitmap(copyBitmap);
+
+
+
+
+
+
+            }
             ////this code removes all red from a picture
             //for (int i = 0; i < bitmap.Width; i++)
             //{
