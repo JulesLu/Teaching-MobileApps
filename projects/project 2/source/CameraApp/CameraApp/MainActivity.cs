@@ -13,8 +13,13 @@ namespace CameraApp
     public class MainActivity : Activity
 
     {
+        //used to track file we use
         public static Java.IO.File _file;
+
+        //used to track the directory we use 
         public static Java.IO.File _dir;
+
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -28,33 +33,34 @@ namespace CameraApp
             {
                 CreateDirectoryForPictures();
                 FindViewById<Button>(Resource.Id.launchCamera).Click += TakePicture;
-                //Button 
+                Button LaunchGallery = FindViewById<Button>(Resource.Id.launchGallery);
+                LaunchGallery.Click += LaunchGalleryOpen;
             }
 
 
         }
 
-            private bool IsThereAnAppToTakePictures()
+        private bool IsThereAnAppToTakePictures()
+        {
+            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            IList<ResolveInfo> availableActivities =
+                PackageManager.QueryIntentActivities
+                (intent, PackageInfoFlags.MatchDefaultOnly);
+            return availableActivities != null && availableActivities.Count > 0;
+        }
+
+
+
+        private void CreateDirectoryForPictures()
+        {
+            _dir = new Java.IO.File(
+                Android.OS.Environment.GetExternalStoragePublicDirectory(
+                    Android.OS.Environment.DirectoryPictures), "CameraApp");
+            if (!_dir.Exists())
             {
-                Intent intent = new Intent(MediaStore.ActionImageCapture);
-                IList<ResolveInfo> availableActivities =
-                    PackageManager.QueryIntentActivities
-                    (intent, PackageInfoFlags.MatchDefaultOnly);
-                return availableActivities != null && availableActivities.Count > 0;
+                _dir.Mkdirs();
             }
-
-
-
-            private void CreateDirectoryForPictures()
-            {
-                _dir = new Java.IO.File(
-                    Android.OS.Environment.GetExternalStoragePublicDirectory(
-                        Android.OS.Environment.DirectoryPictures), "CameraApp");
-                if (!_dir.Exists())
-                {
-                    _dir.Mkdirs();
-                }
-            }
+        }
 
         private void TakePicture(object sender, System.EventArgs e)
         {
@@ -68,17 +74,33 @@ namespace CameraApp
             intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(_file));
             StartActivityForResult(intent, 0);
         }
+        private void LaunchGalleryOpen(object sender, System.EventArgs e)
+        {
+            var galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
+            galleryIntent.SetType("image/*");
+            galleryIntent.SetAction(Intent.ActionGetContent);
+            StartActivityForResult(Intent.CreateChooser(galleryIntent, "Select Picture"), 1);
+        }
+
+
+
+
 
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
+            SetContentView(Resource.Layout.layout1);
+            Android.Graphics.Bitmap copyBitmap = null ;
+
 
             Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
             var contentUri = Android.Net.Uri.FromFile(_file);
             mediaScanIntent.SetData(contentUri);
             SendBroadcast(mediaScanIntent);
-             
+
+            Button RemoveRed = FindViewById<Button>(Resource.Id.removeRed);
+
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume too much memory
             // and cause the application to crash.
@@ -87,48 +109,62 @@ namespace CameraApp
             ImageView imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
             int height = Resources.DisplayMetrics.HeightPixels;
             int width = imageView.Height;
-            Android.Graphics.Bitmap bitmap = _file.Path.;
-            // Android.Graphics.Bitmap copyBitmap = bitmap.Copy(Android.Graphics.Bitmap.Config.Argb8888, true);
-            //imageView.SetImageBitmap(copyBitmap);
+            Android.Graphics.Bitmap bitmap = _file.Path.LoadAndResizeBitmap(width, height);
 
-
+            // check bitmap to see if it is null 
             if (bitmap != null)
             {
-
 
                 Android.Graphics.Bitmap copyBitmap = bitmap.Copy(Android.Graphics.Bitmap.Config.Argb8888, true);
                 imageView.SetImageBitmap(copyBitmap);
 
+            
 
+            RemoveRed.Click += delegate
+            {
+                for (int i = 0; i < bitmap.Width; i++)
+                {
+                    for (int j = 0; j < bitmap.Height; j++)
+                    {
+                        int p = bitmap.GetPixel(i, j);
+                        Android.Graphics.Color c = new Android.Graphics.Color(p);
+                        c.R = 0;
+                        copyBitmap.SetPixel(i, j, c);
+                    }
 
+                }
 
+                imageView.SetImageBitmap(copyBitmap);
+            };
 
-
-            }
-            ////this code removes all red from a picture
-            //for (int i = 0; i < bitmap.Width; i++)
-            //{
-            //    for (int j = 0; j < bitmap.Height; j++)
-            //    {
-            //        int p = bitmap.GetPixel(i, j);
-            //        Android.Graphics.Color c = new Android.Graphics.Color(p);
-            //        c.R = 0;
-            //        copyBitmap.SetPixel(i, j, c);
-            //    }
-            //}
-            //if (copyBitmap != null)
-            //{
-            //    imageView.SetImageBitmap(copyBitmap);
-            //    imageView.Visibility = Android.Views.ViewStates.Visible;
-            //    bitmap = null;
-            //    copyBitmap = null;
-            //}
-
-            //// Dispose of the Java side bitmap.
-            //System.GC.Collect();
         }
+        ////this code removes all red from a picture
+        //for (int i = 0; i < bitmap.Width; i++)
+        //{
+        //    for (int j = 0; j < bitmap.Height; j++)
+        //    {
+        //        int p = bitmap.GetPixel(i, j);
+        //        Android.Graphics.Color c = new Android.Graphics.Color(p);
+        //        c.R = 0;
+        //        copyBitmap.SetPixel(i, j, c);
+        //    }
+        //}
+        //if (copyBitmap != null)
+        //{
+        //    imageView.SetImageBitmap(copyBitmap);
+        //    imageView.Visibility = Android.Views.ViewStates.Visible;
+        //    bitmap = null;
+        //    copyBitmap = null;
+        //}
+
+        //// Dispose of the Java side bitmap.
+        //System.GC.Collect();
     }
-}
+    }
+
+
+
+
 
 
 

@@ -10,15 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/launchCamera" />
-	<Button
-	 android:text="Check Gallery"
-	 android:layout_width="match_parent"
-	 android:layout_height="wrap_content"
-	 android:id="@+id/launchGallery" />
-    <ImageView
-        android:visibility="invisible"
-        android:layout_width="fill_parent"
-        android:layout_height="300.0dp"
-        android:id="@+id/takenPicture"
-        android:adjustViewBounds="true" />
+	  <Button
+        android:id="@+id/launchGallery"
+	      android:text="Check Your Gallery"
+	      android:layout_width="match_parent"
+	      android:layout_height="wrap_content" />
 </LinearLayout>
