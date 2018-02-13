@@ -1,7 +1,6 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Android.Graphics;
 using Android.Content;
 using System.Collections.Generic;
 using Android.Content.PM;
@@ -91,7 +90,7 @@ namespace CameraApp
         {
             base.OnActivityResult(requestCode, resultCode, data);
             SetContentView(Resource.Layout.layout1);
-            Android.Graphics.Bitmap copyBitmap = null ;
+
 
 
             Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
@@ -99,7 +98,7 @@ namespace CameraApp
             mediaScanIntent.SetData(contentUri);
             SendBroadcast(mediaScanIntent);
 
-            Button RemoveRed = FindViewById<Button>(Resource.Id.removeRed);
+
 
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume too much memory
@@ -117,10 +116,11 @@ namespace CameraApp
 
                 Android.Graphics.Bitmap copyBitmap = bitmap.Copy(Android.Graphics.Bitmap.Config.Argb8888, true);
                 imageView.SetImageBitmap(copyBitmap);
+                imageView.Visibility = Android.Views.ViewStates.Visible;
 
-            
+                Button RemoveRed = FindViewById<Button>(Resource.Id.removeRed);
 
-            RemoveRed.Click += delegate
+                RemoveRed.Click += delegate
             {
                 for (int i = 0; i < bitmap.Width; i++)
                 {
@@ -137,30 +137,31 @@ namespace CameraApp
                 imageView.SetImageBitmap(copyBitmap);
             };
 
-        }
-        ////this code removes all red from a picture
-        //for (int i = 0; i < bitmap.Width; i++)
-        //{
-        //    for (int j = 0; j < bitmap.Height; j++)
-        //    {
-        //        int p = bitmap.GetPixel(i, j);
-        //        Android.Graphics.Color c = new Android.Graphics.Color(p);
-        //        c.R = 0;
-        //        copyBitmap.SetPixel(i, j, c);
-        //    }
-        //}
-        //if (copyBitmap != null)
-        //{
-        //    imageView.SetImageBitmap(copyBitmap);
-        //    imageView.Visibility = Android.Views.ViewStates.Visible;
-        //    bitmap = null;
-        //    copyBitmap = null;
-        //}
+            }
+            ////this code removes all red from a picture
+            //for (int i = 0; i < bitmap.Width; i++)
+            //{
+            //    for (int j = 0; j < bitmap.Height; j++)
+            //    {
+            //        int p = bitmap.GetPixel(i, j);
+            //        Android.Graphics.Color c = new Android.Graphics.Color(p);
+            //        c.R = 0;
+            //        copyBitmap.SetPixel(i, j, c);
+            //    }
+            //}
+            //if (copyBitmap != null)
+            //{
+            //    imageView.SetImageBitmap(copyBitmap);
+            //    imageView.Visibility = Android.Views.ViewStates.Visible;
+            //    bitmap = null;
+            //    copyBitmap = null;
+            //}
 
-        //// Dispose of the Java side bitmap.
-        //System.GC.Collect();
+            //// Dispose of the Java side bitmap.
+            //System.GC.Collect();
+        }
     }
-    }
+}
 
 
 
