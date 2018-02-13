@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("CameraApp.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("CameraApp2.Resource", IsApplication=true)]
 
-namespace CameraApp
+namespace CameraApp2
 {
 	
 	
@@ -44,11 +44,26 @@ namespace CameraApp
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f040009
+			public const int GreyScale = 2130968585;
+			
 			// aapt resource value: 0x7f040005
-			public const int launchCamera = 2130968581;
+			public const int NegateBlue = 2130968581;
 			
 			// aapt resource value: 0x7f040006
-			public const int launchGallery = 2130968582;
+			public const int NegateGreen = 2130968582;
+			
+			// aapt resource value: 0x7f040004
+			public const int NegateRed = 2130968580;
+			
+			// aapt resource value: 0x7f040008
+			public const int RandomNoise = 2130968584;
+			
+			// aapt resource value: 0x7f040007
+			public const int Woodgrain = 2130968583;
+			
+			// aapt resource value: 0x7f04000a
+			public const int launchCamera = 2130968586;
 			
 			// aapt resource value: 0x7f040002
 			public const int removeBlue = 2130968578;
@@ -61,9 +76,6 @@ namespace CameraApp
 			
 			// aapt resource value: 0x7f040000
 			public const int takenPicture = 2130968576;
-			
-			// aapt resource value: 0x7f040004
-			public const int takenPictureImageView = 2130968580;
 			
 			static Id()
 			{

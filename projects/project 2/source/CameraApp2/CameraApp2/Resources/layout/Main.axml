@@ -10,9 +10,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/launchCamera" />
-	  <Button
-        android:id="@+id/launchGallery"
-	      android:text="Check Your Gallery"
-	      android:layout_width="match_parent"
-	      android:layout_height="wrap_content" />
 </LinearLayout>
