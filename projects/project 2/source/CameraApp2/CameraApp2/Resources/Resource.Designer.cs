@@ -44,8 +44,14 @@ namespace CameraApp2
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f04000a
+			public const int Clear = 2130968586;
+			
 			// aapt resource value: 0x7f040009
 			public const int GreyScale = 2130968585;
+			
+			// aapt resource value: 0x7f040008
+			public const int HighContrast = 2130968584;
 			
 			// aapt resource value: 0x7f040005
 			public const int NegateBlue = 2130968581;
@@ -56,14 +62,14 @@ namespace CameraApp2
 			// aapt resource value: 0x7f040004
 			public const int NegateRed = 2130968580;
 			
-			// aapt resource value: 0x7f040008
-			public const int RandomNoise = 2130968584;
+			// aapt resource value: 0x7f04000b
+			public const int NewPicture = 2130968587;
 			
 			// aapt resource value: 0x7f040007
 			public const int Woodgrain = 2130968583;
 			
-			// aapt resource value: 0x7f04000a
-			public const int launchCamera = 2130968586;
+			// aapt resource value: 0x7f04000c
+			public const int launchCamera = 2130968588;
 			
 			// aapt resource value: 0x7f040002
 			public const int removeBlue = 2130968578;
