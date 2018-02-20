@@ -102,6 +102,7 @@ namespace GoogleApiExample
             request.Image = new Google.Apis.Vision.v1.Data.Image();
             request.Image.Content = bitmapString;
 
+
             //tell google that we want to perform label detection
             request.Features = new List<Google.Apis.Vision.v1.Data.Feature>();
             request.Features.Add(new Google.Apis.Vision.v1.Data.Feature() { Type = "LABEL_DETECTION" });
