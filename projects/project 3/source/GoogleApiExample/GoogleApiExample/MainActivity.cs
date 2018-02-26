@@ -163,6 +163,8 @@ namespace GoogleApiExample
 
                 // Dispose of the Java side bitmap.
                 System.GC.Collect();
+
+
             }
 
 
