@@ -94,7 +94,7 @@ namespace GoogleApiExample
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume too much memory
             // and cause the application to crash.
-
+            imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
             int height = Resources.DisplayMetrics.HeightPixels;
             int width = 1024;
             bitmap = _file.Path.LoadAndResizeBitmap(width, height);
