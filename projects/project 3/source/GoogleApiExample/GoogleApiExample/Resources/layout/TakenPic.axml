@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="300.0dp"
-        android:id="@+id/takenPicture"
-        android:adjustViewBounds="true" />
+        android:layout_height="350.0dp"
+        android:id="@+id/takenPicture" />
 </LinearLayout>

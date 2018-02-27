@@ -2,10 +2,12 @@
 using Android.Widget;
 using Android.OS;
 using Android.Content;
-using System;
 using System.Collections.Generic;
 using Android.Content.PM;
 using Android.Provider;
+using Uri = Android.Net.Uri;
+using Android;
+using System;
 
 namespace GoogleApiExample
 {
@@ -81,19 +83,21 @@ namespace GoogleApiExample
         /// <param name="data"></param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            
 
+          
             Android.Graphics.Bitmap bitmap = null;
             ImageView imageView = null;
 
             base.OnActivityResult(requestCode, resultCode, data);
-            SetContentView(Resource.Layout.Main);
+            SetContentView(Resource.Layout.TakenPic);
 
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume too much memory
             // and cause the application to crash.
 
-
+            int height = Resources.DisplayMetrics.HeightPixels;
+            int width = 1024;
+            bitmap = _file.Path.LoadAndResizeBitmap(width, height);
 
 
             if (data != null)
@@ -103,14 +107,14 @@ namespace GoogleApiExample
                 mediaScanIntent.SetData(contentUri);
                 SendBroadcast(mediaScanIntent);
 
-                imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
-                int height = Resources.DisplayMetrics.HeightPixels;
-                int width = imageView.Height;
-                bitmap = _file.Path.LoadAndResizeBitmap(width, height);
+               //mageView = FindViewById<ImageView>(Resource.Id.takenPicture);
+                
             }
 
             if (bitmap != null)
             {
+                SetContentView(Resource.Layout.TakenPic);
+                imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
                 imageView.SetImageBitmap(bitmap);
                 imageView.Visibility = Android.Views.ViewStates.Visible;
             }
