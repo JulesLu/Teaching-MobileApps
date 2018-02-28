@@ -20,6 +20,8 @@ namespace GoogleApiExample
         public static Java.IO.File _dir;
         Boolean success = false;
 
+        string thing; 
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -104,7 +106,7 @@ namespace GoogleApiExample
                 mediaScanIntent.SetData(contentUri);
                 SendBroadcast(mediaScanIntent);
 
-               imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
+                 imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
                  imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
                  int height = Resources.DisplayMetrics.HeightPixels;
                  int width = 1024;
@@ -179,7 +181,10 @@ namespace GoogleApiExample
                     //send request.  Note that I'm calling execute() here, but you might want to use
                     //ExecuteAsync instead
 
-                    var apiResult = client.Images.Annotate(batch).Execute(); 
+                    var apiResult = client.Images.Annotate(batch).Execute();
+
+                    thing = apiResult.Responses[0].LabelAnnotations[0].Description;
+                    FindViewById<TextView>(Resource.Id.yourpic).Text += thing;
 
             }
                 // Dispose of the Java side bitmap.
