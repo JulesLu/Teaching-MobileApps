@@ -21,7 +21,7 @@ namespace GoogleApiExample
         public static Java.IO.File _file;
         public static Java.IO.File _dir;
 
-
+        string thing; 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -89,7 +89,7 @@ namespace GoogleApiExample
             ImageView imageView = null;
 
             base.OnActivityResult(requestCode, resultCode, data);
-            SetContentView(Resource.Layout.TakenPic);
+            //SetContentView(Resource.Layout.TakenPic);
 
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume too much memory
@@ -99,9 +99,7 @@ namespace GoogleApiExample
             int width = 1024;
             bitmap = _file.Path.LoadAndResizeBitmap(width, height);
 
-
-            if (data != null)
-            {
+            
                 Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
                 var contentUri = Android.Net.Uri.FromFile(_file);
                 mediaScanIntent.SetData(contentUri);
@@ -109,14 +107,15 @@ namespace GoogleApiExample
 
                //mageView = FindViewById<ImageView>(Resource.Id.takenPicture);
                 
-            }
+            
 
             if (bitmap != null)
             {
                 SetContentView(Resource.Layout.TakenPic);
                 imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
-                imageView.SetImageBitmap(bitmap);
                 imageView.Visibility = Android.Views.ViewStates.Visible;
+                imageView.SetImageBitmap(bitmap);
+                SetContentView(Resource.Layout.TakenPic);
             }
 
             else
@@ -179,7 +178,8 @@ namespace GoogleApiExample
                 //send request.  Note that I'm calling execute() here, but you might want to use
                 //ExecuteAsync instead
                 var apiResult = client.Images.Annotate(batch).Execute();
-
+                thing = apiResult.Responses[0].LabelAnnotations[0].Description;
+                FindViewById<TextView>(Resource.Id.yourpic).Text += thing;
                 SetContentView(Resource.Layout.TakenPic);
 
             }
