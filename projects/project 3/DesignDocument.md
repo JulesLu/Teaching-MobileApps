@@ -1,8 +1,10 @@
-# APPLICATION NAME
-Complete description and overview.  This is where you describe in a brief, yet clear and concise, manner what your product should do and how you expect it should be used.  Why did you write this application?  What purpose does it serve?  It's okay if the only purpose is to meet the homework requirement (but try to move bedyond just that - be creative!).
+# GoogleApi Guess
+In this app a user is able to take a live picture and then have the google api "guess" or tell you what your picture is. I expect it to be used to give people an idea of what they are looking at. With more implementations it can because an I spy game or could give a detailed description of what your image is. 
 
 ## System Design 
-This is where you specify all of the system's requirements.  This section should accurately portray the complete operation of your application.  Provide scenarios, use cases, system requirements, and diagrams/screenshots of the system.
+Android 4
+Camera
+Google APi
 
 ## Usage
-This is where you explain how to use your application
+A user will open the app and be prompted to open the camera. From here the user is able to take a live picture, they are able to choose if they want to keep this picture or take another one. The googe Api will then be used and will give a "guess" as to what your image is a picture of. 
