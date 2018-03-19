@@ -29,7 +29,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:onClick="restartactivity"
-        android:text="Press Here"
+        android:text="Back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"

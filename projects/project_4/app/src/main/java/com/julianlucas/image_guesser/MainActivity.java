@@ -43,7 +43,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
-    private final String APIkey = keyclass.;
+    private final String APIkey = keyclass.key;
     private final int REQUEST_IMAGE_CAPTURE = 1313;
 
     public List<EntityAnnotation> responses;
