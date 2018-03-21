@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
 
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             finalText = (TextView)findViewById(R.id.FinalText);
-            finalText.setText("Dang! I had no idea that was in your picture");
+            finalText.setText("Dang! I had no idea, lets try again?");
         }
 
     }
@@ -167,6 +166,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        //Resize bitmap, pulled from stackExchange post (by jeet.chanchawat)
+        //modified by SRA
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        android.graphics.Matrix matrix = new android.graphics.Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        //crete new bitmap new scaled bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+    }
+
 
 
     public static byte[] fileToByteArray(String filepath) {
@@ -187,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     class getResponse extends AsyncTask<String, String, BatchAnnotateImagesResponse> {
 
         private String path;
@@ -202,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.guess);
 
             txt = (TextView)findViewById(R.id.textView2);
-            txt.setText("Please wait while we analyze the image");
+            txt.setText("Please wait while we analyze the image...");
 
             //display picture that is being analyzed
             img = (ImageView)findViewById(R.id.analyzedIMG);
@@ -285,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Log.i("display", responseout);
-            txt.setText("Does your picture containt a " + descriptions[0]);
+            txt.setText("Does your picture contain a " + descriptions[0]);
             noButton.setEnabled(true);
             yesButton.setEnabled(true);
 
