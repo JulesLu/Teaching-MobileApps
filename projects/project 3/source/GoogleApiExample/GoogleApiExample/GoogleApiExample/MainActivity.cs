@@ -12,22 +12,14 @@ namespace GoogleApiExample
     public class MainActivity : Activity
     {
 
-        /// <summary>
-        /// Used to track the file that we're manipulating between functions
-        /// </summary>
-        public static Java.IO.File _file;
+        //Android.Graphics.Bitmap copymap;
 
-        /// <summary>
-        /// Used to track the directory that we'll be writing to between functions
-        /// </summary>
-        public static Java.IO.File _dir;
+
+        public static JAVA.IO.FILE _file;
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            //see https://forums.xamarin.com/discussion/97273/launch-camera-activity-with-saving-file-in-external-storage-crashes-the-app
-            //I'm not sure if doing the two lines below is a great idea, but it does seem to fix passing files around
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.SetVmPolicy(builder.Build());
             base.OnCreate(savedInstanceState);
 
             // Set our view from the "main" layout resource
@@ -35,7 +27,6 @@ namespace GoogleApiExample
 
             if (IsThereAnAppToTakePictures() == true)
             {
-                CreateDirectoryForPictures();
                 FindViewById<Button>(Resource.Id.launchCameraButton).Click += TakePicture;
             }
         }
@@ -54,25 +45,25 @@ namespace GoogleApiExample
             return availableActivities != null && availableActivities.Count > 0;
         }
 
-        /// <summary>
-        /// Creates a directory on the phone that we can place our images
-        /// </summary>
         private void CreateDirectoryForPictures()
         {
             _dir = new Java.IO.File(
                 Android.OS.Environment.GetExternalStoragePublicDirectory(
-                    Android.OS.Environment.DirectoryPictures), "GoogleApiExample");
+                    Android.OS.Environment.DirectoryPictures), "Is Image");
             if (!_dir.Exists())
             {
                 _dir.Mkdirs();
             }
         }
 
+
         private void TakePicture(object sender, System.EventArgs e)
         {
             Intent intent = new Intent(MediaStore.ActionImageCapture);
             _file = new Java.IO.File(_dir, string.Format("myPhoto_{0}.jpg", System.Guid.NewGuid()));
+
             intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(_file));
+
             StartActivityForResult(intent, 0);
         }
 
@@ -88,50 +79,40 @@ namespace GoogleApiExample
             ImageView imageView = null;
 
             base.OnActivityResult(requestCode, resultCode, data);
-            SetContentView(Resource.Layout.TakenPic);
+            SetContentView(Resource.Layout.takenPictureImageView);
+
+            int height = Resources.DisplayMetrics.HeightPixels;
+            int width = imageView.Height;
+            bitmap = _file.Path.LoadAndResizeBitmap(width, height);
 
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume too much memory
             // and cause the application to crash.
-            imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
-            int height = Resources.DisplayMetrics.HeightPixels;
-            int width = 1024;
-            bitmap = _file.Path.LoadAndResizeBitmap(width, height);
 
 
-            if (data != null)
+
+
+            if (bitmap != null)
             {
+                imageView.SetImageBitmap(bitmap);
+                imageView.Visibility = Android.Views.ViewStates.Visible;
+
                 Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
                 var contentUri = Android.Net.Uri.FromFile(_file);
                 mediaScanIntent.SetData(contentUri);
                 SendBroadcast(mediaScanIntent);
-
-                //mageView = FindViewById<ImageView>(Resource.Id.takenPicture);
-
+                ImageView imageView = FindViewById<ImageView>(Resource.Id.takenPictureImageView);
+                
             }
 
-            if (bitmap != null)
-            {
-                SetContentView(Resource.Layout.TakenPic);
-                imageView = FindViewById<ImageView>(Resource.Id.takenPicture);
-                imageView.SetImageBitmap(bitmap);
-                imageView.Visibility = Android.Views.ViewStates.Visible;
-            }
-
-            else
-            {
-                SetContentView(Resource.Layout.Main);
-                if (IsThereAnAppToTakePictures() == true)
-                {
-                    CreateDirectoryForPictures();
-                    FindViewById<Button>(Resource.Id.launchCameraButton).Click += TakePicture;
-                }
-            }
 
             //AC: workaround for not passing actual files
             // Android.Graphics.Bitmap bitmap = (Android.Graphics.Bitmap)data.Extras.Get("data");
             if (bitmap != null)
             {
+
+
+
                 //convert bitmap into stream to be sent to Google API
                 string bitmapString = "";
                 using (var stream = new System.IO.MemoryStream())
@@ -159,7 +140,7 @@ namespace GoogleApiExample
                 // environment variable. We are specifying our own credentials via json file.
                 var client = new Google.Apis.Vision.v1.VisionService(new Google.Apis.Services.BaseClientService.Initializer()
                 {
-                    ApplicationName = "Project3",
+                    ApplicationName = "subtle-isotope-190917",
                     HttpClientInitializer = cred
                 });
 
@@ -167,6 +148,7 @@ namespace GoogleApiExample
                 var request = new Google.Apis.Vision.v1.Data.AnnotateImageRequest();
                 request.Image = new Google.Apis.Vision.v1.Data.Image();
                 request.Image.Content = bitmapString;
+
 
                 //tell google that we want to perform label detection
                 request.Features = new List<Google.Apis.Vision.v1.Data.Feature>();
@@ -179,11 +161,14 @@ namespace GoogleApiExample
                 //ExecuteAsync instead
                 var apiResult = client.Images.Annotate(batch).Execute();
 
-                SetContentView(Resource.Layout.TakenPic);
-
+                // Dispose of the Java side bitmap.
+                System.GC.Collect();
             }
-            // Dispose of the Java side bitmap.
-            System.GC.Collect();
+
+
+
         }
+        
     }
 }
+

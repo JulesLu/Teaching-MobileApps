@@ -47,11 +47,11 @@ namespace GoogleApiExample
 			// aapt resource value: 0x7f050000
 			public const int launchCameraButton = 2131034112;
 			
-			// aapt resource value: 0x7f050002
-			public const int takenPicture = 2131034114;
-			
 			// aapt resource value: 0x7f050001
-			public const int takenPictureImageView = 2131034113;
+			public const int takenPicture = 2131034113;
+			
+			// aapt resource value: 0x7f050002
+			public const int yourpic = 2131034114;
 			
 			static Id()
 			{

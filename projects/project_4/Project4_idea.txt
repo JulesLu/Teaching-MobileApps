@@ -1,0 +1,2 @@
+I decided to learn how to use android studio during spring break, I am attempting to 
+redo project 3 but this time instead of using visual studio I will use visual studio. 
