@@ -101,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(inResponses){
             finalText = (TextView)findViewById(R.id.FinalText);
-            finalText.setText(String.format("I thought %s was in your picture. There was a %.3f " +
-                    "chance that was in your picture",inIMG,secondaryscore));
         }
         else{
             finalText = (TextView)findViewById(R.id.FinalText);
@@ -192,10 +190,11 @@ public class MainActivity extends AppCompatActivity {
         if (workingfile.exists()) {
 
             //set our bitmap equal to the file in storage
+
             Bitmap ourmap = BitmapFactory.decodeFile(workingfile.getAbsolutePath());
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ourmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             byte[] ar = byteArrayOutputStream.toByteArray();
+            ourmap.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream);
             return ar;
         } else {
             return null;
