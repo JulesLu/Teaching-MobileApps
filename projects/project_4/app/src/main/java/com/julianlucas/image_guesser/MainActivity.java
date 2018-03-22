@@ -193,8 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
             Bitmap ourmap = BitmapFactory.decodeFile(workingfile.getAbsolutePath());
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ourmap.compress(Bitmap.CompressFormat.JPEG, 15, byteArrayOutputStream);
             byte[] ar = byteArrayOutputStream.toByteArray();
-            ourmap.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream);
             return ar;
         } else {
             return null;
